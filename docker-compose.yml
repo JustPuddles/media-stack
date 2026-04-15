@@ -1,4 +1,24 @@
 services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=REPLACE_ME
+      - WIREGUARD_ADDRESSES=REPLACE_ME
+      - SERVER_COUNTRIES=United States
+      - TZ=America/New_York
+    volumes:
+      - /mnt/storage/docker/gluetun:/gluetun
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: unless-stopped
+
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
@@ -16,7 +36,7 @@ services:
       - /mnt/storage/media/music:/data/music
       - /mnt/storage/media/home-videos:/data/home-videos
     restart: unless-stopped
-  
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -28,6 +48,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
       - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
     volumes:
       - /mnt/storage/docker/qbittorrent:/config
       - /mnt/storage/downloads:/downloads
@@ -119,22 +140,38 @@ services:
       - "13378:80"
     restart: unless-stopped
 
-     gluetun:
-    image: qmcgaw/gluetun:latest
-    container_name: gluetun
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - VPN_SERVICE_PROVIDER=mullvad
-      - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=SKMEsmR8Z1g0lAxuyxGBKeaORGG7o+C2p3YBDaRTw2o=
-      - WIREGUARD_ADDRESSES=10.66.173.34/32,fc00:bbbb:bbbb:bb01::3:ad21/128
-      - SERVER_COUNTRIES=United States
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
     volumes:
-      - /mnt/storage/docker/gluetun:/gluetun
+      - /mnt/storage:/srv
+      - /mnt/storage/docker/filebrowser:/config
     ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+      - "8081:80"
     restart: unless-stopped
 
+  netdata:
+    image: netdata/netdata
+    container_name: netdata
+    ports:
+      - "19999:19999"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    volumes:
+      - netdataconfig:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /:/host/root:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+volumes:
+  netdataconfig:
+  netdatalib:
+  netdatacache:
