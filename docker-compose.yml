@@ -17,7 +17,7 @@ services:
       - /mnt/storage/media/home-videos:/data/home-videos
     restart: unless-stopped
   
- qbittorrent:
+  qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     network_mode: "service:gluetun"
