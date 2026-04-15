@@ -8,7 +8,7 @@ services:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=SKMEsmR8Z1g0lAxuyxGBKeaORGG7o+C2p3YBDaRTw2o=
-      - WIREGUARD_ADDRESSES=10.66.173.34/32,fc00:bbbb:bbbb:bb01::3:ad21/128
+      - WIREGUARD_ADDRESSES=10.66.173.34/32
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
     volumes:
