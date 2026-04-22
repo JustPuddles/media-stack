@@ -7,7 +7,7 @@ services:
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=SKMEsmR8Z1g0lAxuyxGBKeaORGG7o+C2p3YBDaRTw2o=
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
       - WIREGUARD_ADDRESSES=10.66.173.34/32
       - FIREWALL=on
       - FIREWALL_VPN_INPUT_PORTS=6881
@@ -33,10 +33,11 @@ services:
     volumes:
       - /mnt/storage/docker/plex:/config
       - /mnt/storage/media/movies:/data/movies
-      - /mnt/storage/media/movies-3d:/data/movies-3d
+      - /mnt/storage/media/3d-movies:/data/movies-3d
       - /mnt/storage/media/tv:/data/tv
       - /mnt/storage/media/music:/data/music
-      - /mnt/storage/media/home-videos:/data/home-videos
+      - /mnt/storage/media/home-movies:/data/home-movies
+      - /mnt/storage/media/audiobooks:/data/audiobooks
     restart: unless-stopped
 
   qbittorrent:
@@ -78,8 +79,8 @@ services:
       - TZ=America/New_York
     volumes:
       - /mnt/storage/docker/sonarr:/config
-      - /mnt/storage/media/tv:/tv
       - /mnt/storage/downloads:/downloads
+      - /mnt/storage/media:/media
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -93,9 +94,8 @@ services:
       - TZ=America/New_York
     volumes:
       - /mnt/storage/docker/radarr:/config
-      - /mnt/storage/media/movies:/movies
-      - /mnt/storage/media/movies-3d:/movies-3d
       - /mnt/storage/downloads:/downloads
+      - /mnt/storage/media:/media
     ports:
       - "7878:7878"
     restart: unless-stopped
@@ -109,8 +109,7 @@ services:
       - TZ=America/New_York
     volumes:
       - /mnt/storage/docker/bazarr:/config
-      - /mnt/storage/media/movies:/movies
-      - /mnt/storage/media/tv:/tv
+      - /mnt/storage/media:/media
     ports:
       - "6767:6767"
     restart: unless-stopped
