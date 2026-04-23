@@ -153,7 +153,7 @@ services:
     restart: unless-stopped
 
   ersatztv:
-    image: lscr.io/linuxserver/ersatztv:latest
+    image: ghcr.io/ersatztv/ersatztv:latest
     container_name: ersatztv
     environment:
       - PUID=1000
