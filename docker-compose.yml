@@ -29,7 +29,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - VERSION=docker
     volumes:
       - /mnt/storage/docker/plex:/config
       - /mnt/storage/media/movies:/data/movies
@@ -51,7 +50,6 @@ services:
       - PGID=1000
       - TZ=America/New_York
       - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
     volumes:
       - /mnt/storage/docker/qbittorrent:/config
       - /mnt/storage/downloads:/downloads
@@ -141,6 +139,96 @@ services:
       - "13378:80"
     restart: unless-stopped
 
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /mnt/storage/docker/tautulli:/config
+    ports:
+      - "8181:8181"
+    restart: unless-stopped
+
+  ersatztv:
+    image: lscr.io/linuxserver/ersatztv:latest
+    container_name: ersatztv
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /mnt/storage/docker/ersatztv:/config
+      - /mnt/storage/media:/media
+    ports:
+      - "8409:8409"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: immich_postgres
+    environment:
+      - POSTGRES_USER=immich
+      - POSTGRES_PASSWORD=immich
+      - POSTGRES_DB=immich
+    volumes:
+      - /mnt/storage/docker/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    container_name: immich_redis
+    restart: unless-stopped
+
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:release
+    container_name: immich
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DB_HOST=postgres
+      - DB_USERNAME=immich
+      - DB_PASSWORD=immich
+      - DB_DATABASE_NAME=immich
+      - REDIS_HOST=redis
+    volumes:
+      - /mnt/storage/media/photos:/usr/src/app/upload
+      - /mnt/storage/docker/immich:/config
+    ports:
+      - "2283:3001"
+    restart: unless-stopped
+
+  immich-machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:release
+    container_name: immich_ml
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - /mnt/storage/docker/ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    restart: unless-stopped
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    volumes:
+      - /mnt/storage/docker/homepage:/app/config
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
   filebrowser:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
@@ -168,12 +256,10 @@ services:
       - /:/host/root:ro,rslave
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - /etc/passwd:/host/etc/passwd:ro
-      - /etc/group:/host/etc/group:ro
-      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
 volumes:
   netdataconfig:
   netdatalib:
   netdatacache:
+
