@@ -14,7 +14,7 @@ services:
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/gluetun:/gluetun
+      - /opt/docker/gluetun:/gluetun
     ports:
       - "8080:8080"
       - "6881:6881"
@@ -25,18 +25,22 @@ services:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
     network_mode: host
+    runtime: nvidia
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
     volumes:
-      - /mnt/storage/docker/plex:/config
-      - /mnt/storage/media/movies:/data/movies
-      - /mnt/storage/media/3d-movies:/data/movies-3d
-      - /mnt/storage/media/tv:/data/tv
-      - /mnt/storage/media/music:/data/music
-      - /mnt/storage/media/home-movies:/data/home-movies
-      - /mnt/storage/media/audiobooks:/data/audiobooks
+      - /opt/docker/plex:/config
+      - /mnt/eltzroth/media/movies:/data/movies
+      - /mnt/eltzroth/media/3d-movies:/data/movies-3d
+      - /mnt/eltzroth/media/tv:/data/tv
+      - /mnt/eltzroth/media/music:/data/music
+      - /mnt/eltzroth/media/home-movies:/data/home-movies
+      - /mnt/eltzroth/media/home-videos:/data/home-videos
+      - /mnt/eltzroth/media/audiobooks:/data/audiobooks
     restart: unless-stopped
 
   qbittorrent:
@@ -51,8 +55,8 @@ services:
       - TZ=America/New_York
       - WEBUI_PORT=8080
     volumes:
-      - /mnt/storage/docker/qbittorrent:/config
-      - /mnt/storage/downloads:/downloads
+      - /opt/docker/qbittorrent:/config
+      - /mnt/eltzroth/downloads:/downloads
     restart: unless-stopped
 
   prowlarr:
@@ -63,7 +67,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/prowlarr:/config
+      - /opt/docker/prowlarr:/config
     ports:
       - "9696:9696"
     restart: unless-stopped
@@ -76,9 +80,9 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/sonarr:/config
-      - /mnt/storage/downloads:/downloads
-      - /mnt/storage/media:/media
+      - /opt/docker/sonarr:/config
+      - /mnt/eltzroth/downloads:/downloads
+      - /mnt/eltzroth/media:/media
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -91,9 +95,9 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/radarr:/config
-      - /mnt/storage/downloads:/downloads
-      - /mnt/storage/media:/media
+      - /opt/docker/radarr:/config
+      - /mnt/eltzroth/downloads:/downloads
+      - /mnt/eltzroth/media:/media
     ports:
       - "7878:7878"
     restart: unless-stopped
@@ -106,8 +110,8 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/bazarr:/config
-      - /mnt/storage/media:/media
+      - /opt/docker/bazarr:/config
+      - /mnt/eltzroth/media:/media
     ports:
       - "6767:6767"
     restart: unless-stopped
@@ -120,7 +124,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/overseerr:/config
+      - /opt/docker/overseerr:/config
     ports:
       - "5055:5055"
     restart: unless-stopped
@@ -131,10 +135,10 @@ services:
     environment:
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/media/audiobooks:/audiobooks
-      - /mnt/storage/media/music:/music
-      - /mnt/storage/docker/audiobookshelf:/config
-      - /mnt/storage/docker/audiobookshelf/metadata:/metadata
+      - /mnt/eltzroth/media/audiobooks:/audiobooks
+      - /mnt/eltzroth/media/music:/music
+      - /opt/docker/audiobookshelf/config:/config
+      - /opt/docker/audiobookshelf/metadata:/metadata
     ports:
       - "13378:80"
     restart: unless-stopped
@@ -147,7 +151,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/tautulli:/config
+      - /opt/docker/tautulli:/config
     ports:
       - "8181:8181"
     restart: unless-stopped
@@ -160,25 +164,69 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /mnt/storage/docker/ersatztv:/config
-      - /mnt/storage/media:/media
+      - /opt/docker/ersatztv:/config
+      - /mnt/eltzroth/media:/media
     ports:
       - "8409:8409"
     restart: unless-stopped
 
-  postgres:
+  paperless-redis:
+    image: redis:7
+    container_name: paperless-redis
+    restart: unless-stopped
+    volumes:
+      - /opt/docker/paperless/redis:/data
+
+  paperless-db:
     image: postgres:15
+    container_name: paperless-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=paperless
+      - POSTGRES_USER=paperless
+      - POSTGRES_PASSWORD=paperless
+    volumes:
+      - /opt/docker/paperless/db:/var/lib/postgresql/data
+
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    depends_on:
+      - paperless-db
+      - paperless-redis
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PAPERLESS_REDIS=redis://paperless-redis:6379
+      - PAPERLESS_DBHOST=paperless-db
+      - PAPERLESS_DBNAME=paperless
+      - PAPERLESS_DBUSER=paperless
+      - PAPERLESS_DBPASS=paperless
+      - PAPERLESS_TIME_ZONE=America/New_York
+      - PAPERLESS_OCR_LANGUAGE=eng
+      - PAPERLESS_CONSUMER_POLLING=60
+      - PAPERLESS_URL=http://10.0.0.87:8000
+    volumes:
+      - /opt/docker/paperless/data:/usr/src/paperless/data
+      - /mnt/eltzroth/documents/paperless/media:/usr/src/paperless/media
+      - /mnt/eltzroth/documents/paperless/export:/usr/src/paperless/export
+      - /mnt/eltzroth/documents/paperless/consume:/usr/src/paperless/consume
+
+  immich-postgres:
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     container_name: immich_postgres
     environment:
-      - POSTGRES_USER=immich
       - POSTGRES_PASSWORD=immich
+      - POSTGRES_USER=immich
       - POSTGRES_DB=immich
+      - POSTGRES_INITDB_ARGS=--data-checksums
     volumes:
-      - /mnt/storage/docker/postgres:/var/lib/postgresql/data
+      - /opt/docker/immich/postgres:/var/lib/postgresql/data
     restart: unless-stopped
 
-  redis:
-    image: redis:latest
+  immich-redis:
+    image: redis:6.2-alpine
     container_name: immich_redis
     restart: unless-stopped
 
@@ -186,45 +234,51 @@ services:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich
     depends_on:
-      - postgres
-      - redis
+      - immich-postgres
+      - immich-redis
     environment:
-      - DB_HOST=postgres
+      - DB_HOSTNAME=immich-postgres
       - DB_USERNAME=immich
       - DB_PASSWORD=immich
       - DB_DATABASE_NAME=immich
-      - REDIS_HOST=redis
+      - REDIS_HOSTNAME=immich-redis
+      - IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning:3003
     volumes:
-      - /mnt/storage/media/photos:/usr/src/app/upload
-      - /mnt/storage/docker/immich:/config
+      - /mnt/eltzroth/media/photos:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
     ports:
-      - "2283:3001"
+      - "2283:2283"
     restart: unless-stopped
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:release
+    image: ghcr.io/immich-app/immich-machine-learning:release-cuda
     container_name: immich_ml
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - /opt/docker/immich/model-cache:/cache
     restart: unless-stopped
 
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     volumes:
-      - /mnt/storage/docker/ollama:/root/.ollama
+      - /opt/docker/ollama:/root/.ollama
     ports:
       - "11434:11434"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
     restart: unless-stopped
 
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     volumes:
-      - /mnt/storage/docker/homepage:/app/config
+      - /opt/docker/homepage:/app/config
     ports:
       - "3000:3000"
     restart: unless-stopped
@@ -234,8 +288,9 @@ services:
     container_name: filebrowser
     user: "1000:1000"
     volumes:
-      - /mnt/storage:/srv
-      - /mnt/storage/docker/filebrowser/database.db:/database.db
+      - /mnt/eltzroth:/srv
+      - /opt/docker/filebrowser/database.db:/database.db
+      - /opt/docker/filebrowser/settings.json:/config/settings.json
     ports:
       - "8081:80"
     restart: unless-stopped
@@ -250,16 +305,11 @@ services:
     security_opt:
       - apparmor=unconfined
     volumes:
-      - netdataconfig:/etc/netdata
-      - netdatalib:/var/lib/netdata
-      - netdatacache:/var/cache/netdata
+      - /opt/docker/netdata/config:/etc/netdata
+      - /opt/docker/netdata/lib:/var/lib/netdata
+      - /opt/docker/netdata/cache:/var/cache/netdata
       - /:/host/root:ro,rslave
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
     restart: unless-stopped
-
-volumes:
-  netdataconfig:
-  netdatalib:
-  netdatacache:
 
