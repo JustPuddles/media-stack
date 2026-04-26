@@ -35,7 +35,7 @@ services:
     volumes:
       - /opt/docker/plex:/config
       - /mnt/eltzroth/media/movies:/data/movies
-      - /mnt/eltzroth/media/3d-movies:/data/movies-3d
+      - /mnt/eltzroth/media/3d-movies:/data/3d-movies
       - /mnt/eltzroth/media/tv:/data/tv
       - /mnt/eltzroth/media/music:/data/music
       - /mnt/eltzroth/media/home-movies:/data/home-movies
@@ -198,11 +198,14 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - USERMAP_UID=1000
+      - USERMAP_GID=1000
       - PAPERLESS_REDIS=redis://paperless-redis:6379
       - PAPERLESS_DBHOST=paperless-db
       - PAPERLESS_DBNAME=paperless
       - PAPERLESS_DBUSER=paperless
       - PAPERLESS_DBPASS=paperless
+      - PAPERLESS_SECRET_KEY=CHANGE_THIS_TO_A_LONG_RANDOM_STRING
       - PAPERLESS_TIME_ZONE=America/New_York
       - PAPERLESS_OCR_LANGUAGE=eng
       - PAPERLESS_CONSUMER_POLLING=60
