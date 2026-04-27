@@ -15,6 +15,7 @@ services:
       - TZ=America/New_York
       - DNS=1.1.1.1,8.8.8.8
       - HEALTHCHECK=off
+      - HEALTH_RESTART_VPN=off
     volumes:
       - /opt/docker/gluetun:/gluetun
     ports:
