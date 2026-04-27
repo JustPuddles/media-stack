@@ -14,7 +14,7 @@ services:
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
       - DOT=off
-      - FIREWALL_OUTBOUNT_SUBNETS=192.168.0.0/16,10.0.0.0/8
+      - FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/16,10.0.0.0/8
     volumes:
       - /opt/docker/gluetun:/gluetun
     ports:
