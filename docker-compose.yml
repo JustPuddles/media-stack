@@ -6,31 +6,24 @@ services:
     - NET_ADMIN
   devices:
     - /dev/net/tun:/dev/net/tun
-
   environment:
     - VPN_SERVICE_PROVIDER=mullvad
     - VPN_TYPE=wireguard
     - WIREGUARD_PRIVATE_KEY=aL0M3nhofMIPidYXUvemnpHpekLmz/eqVjWRYXTEM3E=
     - WIREGUARD_ADDRESSES=10.66.173.34/32
-
     - FIREWALL=on
     - FIREWALL_VPN_INPUT_PORTS=6881
     - FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/16,10.0.0.0/8
-
     - SERVER_COUNTRIES=USA
     - TZ=America/New_York
-
     - DNS_ADDRESS=1.1.1.1
     - DOT=off
-
   volumes:
     - /opt/docker/gluetun:/gluetun
-
   ports:
     - "8080:8080"
     - "6881:6881"
     - "6881:6881/udp"
-
   restart: unless-stopped
 
   plex:
