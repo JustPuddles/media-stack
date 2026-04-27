@@ -247,6 +247,7 @@ services:
       - REDIS_HOSTNAME=immich-redis
       - IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning:3003
     volumes:
+      - /mnt/eltzroth/media/photos:/mnt/src/app/upload
       - /mnt/eltzroth/media/photos:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     ports:
