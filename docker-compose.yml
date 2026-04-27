@@ -1,30 +1,30 @@
 services:
   gluetun:
-  image: qmcgaw/gluetun:latest
-  container_name: gluetun
-  cap_add:
-    - NET_ADMIN
-  devices:
-    - /dev/net/tun:/dev/net/tun
-  environment:
-    - VPN_SERVICE_PROVIDER=mullvad
-    - VPN_TYPE=wireguard
-    - WIREGUARD_PRIVATE_KEY=aL0M3nhofMIPidYXUvemnpHpekLmz/eqVjWRYXTEM3E=
-    - WIREGUARD_ADDRESSES=10.66.173.34/32
-    - FIREWALL=on
-    - FIREWALL_VPN_INPUT_PORTS=6881
-    - FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/16,10.0.0.0/8
-    - SERVER_COUNTRIES=USA
-    - TZ=America/New_York
-    - DNS_ADDRESS=1.1.1.1
-    - DOT=off
-  volumes:
-    - /opt/docker/gluetun:/gluetun
-  ports:
-    - "8080:8080"
-    - "6881:6881"
-    - "6881:6881/udp"
-  restart: unless-stopped
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=
+      - WIREGUARD_ADDRESSES=10.66.173.34/32
+      - FIREWALL=on
+      - FIREWALL_VPN_INPUT_PORTS=6881
+      - FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/16,10.0.0.0/8
+      - SERVER_COUNTRIES=USA
+      - TZ=America/New_York
+      - DNS_ADDRESS=1.1.1.1
+      - DOT=off
+    volumes:
+      - /opt/docker/gluetun:/gluetun
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: unless-stopped
 
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -178,20 +178,20 @@ services:
   paperless-redis:
     image: redis:7
     container_name: paperless-redis
-    restart: unless-stopped
     volumes:
       - /opt/docker/paperless/redis:/data
+    restart: unless-stopped
 
   paperless-db:
     image: postgres:15
     container_name: paperless-db
-    restart: unless-stopped
     environment:
       - POSTGRES_DB=paperless
       - POSTGRES_USER=paperless
       - POSTGRES_PASSWORD=paperless
     volumes:
       - /opt/docker/paperless/db:/var/lib/postgresql/data
+    restart: unless-stopped
 
   paperless:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -199,7 +199,6 @@ services:
     depends_on:
       - paperless-db
       - paperless-redis
-    restart: unless-stopped
     ports:
       - "8001:8000"
     environment:
@@ -221,6 +220,7 @@ services:
       - /mnt/eltzroth/documents/paperless/export:/usr/src/paperless/export
       - /mnt/eltzroth/documents/paperless/consume:/usr/src/paperless/consume
       - /mnt/eltzroth/documents:/documents:ro
+    restart: unless-stopped
 
   immich-postgres:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
