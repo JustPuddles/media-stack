@@ -248,7 +248,7 @@ services:
       - IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning:3003
     volumes:
       - /mnt/eltzroth/media/photos:/mnt/src/app/upload
-      - /mnt/eltzroth/media/photos:/usr/src/app/upload
+      - /mnt/eltzroth/media/photos:/photos:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
