@@ -13,6 +13,7 @@ services:
       - FIREWALL_VPN_INPUT_PORTS=6881
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
+      - DNS=1.1.1.1,8.8.8.8
     volumes:
       - /opt/docker/gluetun:/gluetun
     ports:
