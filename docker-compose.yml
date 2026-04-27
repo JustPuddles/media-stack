@@ -14,6 +14,7 @@ services:
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
       - DNS=1.1.1.1,8.8.8.8
+      - HEALTHCHECK=off
     volumes:
       - /opt/docker/gluetun:/gluetun
     ports:
