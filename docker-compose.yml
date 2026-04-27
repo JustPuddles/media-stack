@@ -300,7 +300,6 @@ services:
     volumes:
       - /mnt/eltzroth:/srv
       - /opt/docker/filebrowser/database.db:/database.db
-      - /opt/docker/filebrowser/settings.json:/config/settings.json
     ports:
       - "8081:80"
     restart: unless-stopped
