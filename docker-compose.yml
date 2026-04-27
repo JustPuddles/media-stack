@@ -16,7 +16,6 @@ services:
       - FIREWALL_OUTBOUND_SUBNETS=192.168.0.0/16,10.0.0.0/8
       - SERVER_COUNTRIES=USA
       - TZ=America/New_York
-      - DNS_ADDRESS=1.1.1.1
       - DOT=off
     volumes:
       - /opt/docker/gluetun:/gluetun
