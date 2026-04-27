@@ -199,7 +199,7 @@ services:
       - paperless-redis
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       - USERMAP_UID=1000
       - USERMAP_GID=1000
@@ -212,7 +212,7 @@ services:
       - PAPERLESS_TIME_ZONE=America/New_York
       - PAPERLESS_OCR_LANGUAGE=eng
       - PAPERLESS_CONSUMER_POLLING=60
-      - PAPERLESS_URL=http://10.0.0.87:8000
+      - PAPERLESS_URL=http://10.0.0.87:8001
     volumes:
       - /opt/docker/paperless/data:/usr/src/paperless/data
       - /mnt/eltzroth/documents/paperless/media:/usr/src/paperless/media
