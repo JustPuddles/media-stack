@@ -295,15 +295,15 @@ services:
     restart: unless-stopped
 
   filebrowser:
-    image: filebrowser/filebrowser:latest
-    container_name: filebrowser
-    user: "1000:1000"
-    volumes:
-      - /mnt/eltzroth:/srv
-      - /opt/docker/filebrowser/database.db:/database.db
-    ports:
-      - "8081:80"
-    restart: unless-stopped
+  image: filebrowser/filebrowser:latest
+  container_name: filebrowser
+  user: "1000:1000"
+  volumes:
+    - /mnt/eltzroth:/srv
+    - /opt/docker/filebrowser:/database
+  ports:
+    - "8081:80"
+  restart: unless-stopped
 
   netdata:
     image: netdata/netdata
