@@ -221,7 +221,7 @@ services:
       - /mnt/eltzroth/documents:/documents:ro
     restart: unless-stopped
 
-  immich-postgres:
+   immich-postgres:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     container_name: immich_postgres
     environment:
@@ -246,16 +246,17 @@ services:
       - immich-redis
       - immich-machine-learning
     environment:
+      - TZ=America/New_York
       - DB_HOSTNAME=immich-postgres
       - DB_USERNAME=immich
       - DB_PASSWORD=immich
       - DB_DATABASE_NAME=immich
       - REDIS_HOSTNAME=immich-redis
       - IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning:3003
+      - UPLOAD_LOCATION=/usr/src/app/upload
     volumes:
-      - /mnt/eltzroth/media/photos/immich-uploads:/usr/src/app/upload
-      - /opt/docker/immich/library:/usr/src/app/library
-      - /mnt/eltzroth/media/photos:/photos:rw
+      - /mnt/eltzroth/media/photos/immich-upload:/usr/src/app/upload
+      - /mnt/eltzroth/media/photos/external:/external:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
