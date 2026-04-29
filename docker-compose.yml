@@ -294,7 +294,7 @@ services:
       - "3000:3000"
     restart: unless-stopped
 
-  filebrowser:
+filebrowser:
   image: filebrowser/filebrowser:latest
   container_name: filebrowser
   user: "1000:1000"
