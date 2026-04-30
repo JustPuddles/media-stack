@@ -324,3 +324,108 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
     restart: unless-stopped
+     portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/docker/portainer:/data
+    restart: unless-stopped
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - /opt/docker/uptime-kuma:/app/data
+    restart: unless-stopped
+
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /opt/docker/ntfy/cache:/var/cache/ntfy
+      - /opt/docker/ntfy/config:/etc/ntfy
+    ports:
+      - "8082:80"
+    restart: unless-stopped
+
+  readarr-audiobooks:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr-audiobooks
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /opt/docker/readarr-audiobooks:/config
+      - /mnt/eltzroth/downloads:/downloads
+      - /mnt/eltzroth/media/audiobooks:/audiobooks
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    user: "1000:1000"
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /opt/docker/recyclarr:/config
+    restart: unless-stopped
+
+  kometa:
+    image: kometateam/kometa:latest
+    container_name: kometa
+    environment:
+      - TZ=America/New_York
+      - KOMETA_RUN=true
+    volumes:
+      - /opt/docker/kometa:/config
+    restart: unless-stopped
+
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    container_name: scrutiny
+    cap_add:
+      - SYS_RAWIO
+    privileged: true
+    ports:
+      - "8083:8080"
+    volumes:
+      - /opt/docker/scrutiny/config:/opt/scrutiny/config
+      - /opt/docker/scrutiny/influxdb:/opt/scrutiny/influxdb
+      - /run/udev:/run/udev:ro
+    restart: unless-stopped
+
+ mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    container_name: mealie
+    environment:
+      - TZ=America/New_York
+      - PUID=1000
+      - PGID=1000
+      - BASE_URL=http://100.96.227.62:9001
+    volumes:
+      - /opt/docker/mealie:/app/data
+    ports:
+      - "9001:9000"
+    restart: unless-stopped
