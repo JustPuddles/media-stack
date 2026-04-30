@@ -9,7 +9,7 @@ services:
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=cHkDd4fV+sDXGd940JT0o2R0uE//riXA8DKvf91EKWU=
+      - WIREGUARD_PRIVATE_KEY=
       - WIREGUARD_ADDRESSES=10.72.1.181/32
       - FIREWALL=on
       - FIREWALL_VPN_INPUT_PORTS=6881
@@ -220,8 +220,8 @@ services:
       - /mnt/eltzroth/documents/paperless/consume:/usr/src/paperless/consume
       - /mnt/eltzroth/documents:/documents:ro
     restart: unless-stopped
-    
- immich-postgres:
+
+  immich-postgres:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     container_name: immich_postgres
     environment:
@@ -233,12 +233,12 @@ services:
       - /opt/docker/immich/postgres:/var/lib/postgresql/data
     restart: unless-stopped
 
- immich-redis:
+  immich-redis:
     image: redis:6.2-alpine
     container_name: immich_redis
     restart: unless-stopped
 
-immich-server:
+  immich-server:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich
     depends_on:
@@ -262,7 +262,7 @@ immich-server:
       - "2283:2283"
     restart: unless-stopped
 
- immich-machine-learning:
+  immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:release-cuda
     container_name: immich_ml
     runtime: nvidia
@@ -291,20 +291,21 @@ immich-server:
     container_name: homepage
     volumes:
       - /opt/docker/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - "3000:3000"
     restart: unless-stopped
-    
+
   filebrowser:
-     image: filebrowser/filebrowser:latest
-     container_name: filebrowser
-     user: "1000:1000"
-     volumes:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    user: "1000:1000"
+    volumes:
       - /mnt/eltzroth:/srv
       - /opt/docker/filebrowser:/database
-     ports:
+    ports:
       - "8081:80"
-     restart: unless-stopped
+    restart: unless-stopped
 
   netdata:
     image: netdata/netdata
