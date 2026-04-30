@@ -369,7 +369,7 @@ services:
     restart: unless-stopped
 
   readarr-audiobooks:
-    image: lscr.io/linuxserver/readarr:nightly
+    image: lscr.io/linuxserver/readarr:testing
     container_name: readarr-audiobooks
     environment:
       - PUID=1000
