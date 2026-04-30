@@ -221,7 +221,7 @@ services:
       - /mnt/eltzroth/documents:/documents:ro
     restart: unless-stopped
 
-   immich-postgres:
+ immich-postgres:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     container_name: immich_postgres
     environment:
@@ -233,12 +233,12 @@ services:
       - /opt/docker/immich/postgres:/var/lib/postgresql/data
     restart: unless-stopped
 
-  immich-redis:
+ immich-redis:
     image: redis:6.2-alpine
     container_name: immich_redis
     restart: unless-stopped
 
-  immich-server:
+immich-server:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich
     depends_on:
@@ -262,7 +262,7 @@ services:
       - "2283:2283"
     restart: unless-stopped
 
-  immich-machine-learning:
+ immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:release-cuda
     container_name: immich_ml
     runtime: nvidia
