@@ -416,7 +416,7 @@ services:
       - /opt/docker/scrutiny/influxdb:/opt/scrutiny/influxdb
       - /run/udev:/run/udev:ro
     restart: unless-stopped
-
+    
  mealie:
     image: ghcr.io/mealie-recipes/mealie:latest
     container_name: mealie
