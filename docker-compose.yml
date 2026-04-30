@@ -417,7 +417,7 @@ services:
       - /run/udev:/run/udev:ro
     restart: unless-stopped
     
- mealie:
+  mealie:
     image: ghcr.io/mealie-recipes/mealie:latest
     container_name: mealie
     environment:
