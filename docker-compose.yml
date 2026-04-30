@@ -368,21 +368,6 @@ services:
       - "8082:80"
     restart: unless-stopped
 
-  readarr-audiobooks:
-    image: lscr.io/linuxserver/readarr:testing
-    container_name: readarr-audiobooks
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/New_York
-    volumes:
-      - /opt/docker/readarr-audiobooks:/config
-      - /mnt/eltzroth/downloads:/downloads
-      - /mnt/eltzroth/media/audiobooks:/audiobooks
-    ports:
-      - "8787:8787"
-    restart: unless-stopped
-
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:latest
     container_name: recyclarr
