@@ -9,7 +9,7 @@ services:
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=
+      - WIREGUARD_PRIVATE_KEY=cHkDd4fV+sDXGd940JT0o2R0uE//riXA8DKvf91EKWU=
       - WIREGUARD_ADDRESSES=10.72.1.181/32
       - FIREWALL=on
       - FIREWALL_VPN_INPUT_PORTS=6881
