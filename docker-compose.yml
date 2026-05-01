@@ -320,20 +320,6 @@ services:
       - /opt/docker/uptime-kuma:/app/data
     restart: unless-stopped
 
-  ntfy:
-    image: binwiederhier/ntfy:latest
-    container_name: ntfy
-    command:
-      - serve
-    environment:
-      - TZ=America/New_York
-    volumes:
-      - /opt/docker/ntfy/cache:/var/cache/ntfy
-      - /opt/docker/ntfy/config:/etc/ntfy
-    ports:
-      - "8082:80"
-    restart: unless-stopped
-
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:latest
     container_name: recyclarr
