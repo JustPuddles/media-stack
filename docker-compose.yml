@@ -369,20 +369,6 @@ services:
     volumes:
       - /opt/docker/recyclarr:/config
     restart: unless-stopped
-
-  scrutiny:
-    image: ghcr.io/analogj/scrutiny:master-omnibus
-    container_name: scrutiny
-    cap_add:
-      - SYS_RAWIO
-    privileged: true
-    ports:
-      - "8083:8080"
-    volumes:
-      - /opt/docker/scrutiny/config:/opt/scrutiny/config
-      - /opt/docker/scrutiny/influxdb:/opt/scrutiny/influxdb
-      - /run/udev:/run/udev:ro
-    restart: unless-stopped
     
   mealie:
     image: ghcr.io/mealie-recipes/mealie:latest
