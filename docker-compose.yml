@@ -269,6 +269,7 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - MACHINE_LEARNING_DEVICE=cuda
     volumes:
       - /opt/docker/immich/model-cache:/cache
     restart: unless-stopped
