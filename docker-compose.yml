@@ -106,20 +106,6 @@ services:
       - "7878:7878"
     restart: unless-stopped
 
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/New_York
-    volumes:
-      - /opt/docker/bazarr:/config
-      - /mnt/eltzroth/media:/media
-    ports:
-      - "6767:6767"
-    restart: unless-stopped
-
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -285,18 +271,6 @@ services:
       - /opt/docker/ollama:/root/.ollama
     ports:
       - "11434:11434"
-    restart: unless-stopped
-
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    environment:
-     - HOMEPAGE_ALLOWED_HOSTS=*
-    volumes:
-      - /opt/docker/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - "3000:3000"
     restart: unless-stopped
 
   filebrowser:
