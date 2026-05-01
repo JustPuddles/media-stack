@@ -369,16 +369,6 @@ services:
       - /opt/docker/recyclarr:/config
     restart: unless-stopped
 
-  kometa:
-    image: kometateam/kometa:latest
-    container_name: kometa
-    environment:
-      - TZ=America/New_York
-      - KOMETA_RUN=true
-    volumes:
-      - /opt/docker/kometa:/config
-    restart: unless-stopped
-
   scrutiny:
     image: ghcr.io/analogj/scrutiny:master-omnibus
     container_name: scrutiny
