@@ -243,7 +243,7 @@ services:
     volumes:
       - /mnt/eltzroth/media/photos/immich-upload:/usr/src/app/upload
       - /mnt/eltzroth/media/photos:/external:rw
-      - /etc/localtime:/etc/localtime:rw
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
     restart: unless-stopped
