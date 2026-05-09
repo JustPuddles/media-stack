@@ -356,3 +356,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
+    
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    environment:
+      - OLLAMA_BASE_URL=http://10.0.0.87:11434
+    volumes:
+      - /opt/docker/open-webui:/app/backend/data
+    ports:
+      - "3002:8080"
+    restart: unless-stopped
+
