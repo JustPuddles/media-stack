@@ -343,3 +343,16 @@ services:
     ports:
       - "9001:9000"
     restart: unless-stopped
+    
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    network_mode: host
+    privileged: true
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /opt/docker/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
