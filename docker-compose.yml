@@ -157,6 +157,7 @@ services:
     volumes:
       - /opt/docker/ersatztv:/config
       - /mnt/eltzroth/media:/media
+      - /mnt/Eltzroth2/media:/media      
     ports:
       - "8409:8409"
     restart: unless-stopped
