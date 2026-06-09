@@ -242,7 +242,7 @@ services:
       - IMMICH_MACHINE_LEARNING_URL=http://immich-machine-learning:3003
       - UPLOAD_LOCATION=/usr/src/app/upload
     volumes:
-      - /mnt/eltzroth/apps/immich-upload:/usr/src/app/upload
+      - /mnt/Eltzroth2/apps/immich-upload:/usr/src/app/upload
       - /mnt/Eltzroth2/media/Photos:/external:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
