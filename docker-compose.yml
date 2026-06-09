@@ -38,6 +38,7 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
     volumes:
       - /opt/docker/plex:/config
+      -/mnt/Eltzroth2/media/TV:/data/TV
       - /mnt/eltzroth/media/movies:/data/movies
       - /mnt/eltzroth/media/3d-movies:/data/3d-movies
       - /mnt/eltzroth/media/tv:/data/tv
@@ -242,7 +243,7 @@ services:
       - UPLOAD_LOCATION=/usr/src/app/upload
     volumes:
       - /mnt/eltzroth/apps/immich-upload:/usr/src/app/upload
-      - /mnt/eltzroth/media/photos:/external:rw
+      - /mnt/Eltzroth2/media/Photos:/external:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
