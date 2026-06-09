@@ -38,7 +38,7 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
     volumes:
       - /opt/docker/plex:/config
-      -/mnt/Eltzroth2/media/TV:/data/TV
+      - /mnt/Eltzroth2/media/TV:/data/TV
       - /mnt/eltzroth/media/movies:/data/movies
       - /mnt/eltzroth/media/3d-movies:/data/3d-movies
       - /mnt/eltzroth/media/tv:/data/tv
