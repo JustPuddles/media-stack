@@ -87,7 +87,7 @@ services:
     volumes:
       - /opt/docker/sonarr:/config
       - /mnt/eltzroth/downloads:/downloads
-      - /mnt/eltzroth/media:/media
+      - /mnt/Eltzroth2/media:/media
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -281,6 +281,7 @@ services:
     user: "1000:1000"
     volumes:
       - /mnt/eltzroth:/srv
+      - /mnt/Eltzroth2:/srv      
       - /opt/docker/filebrowser:/database
     ports:
       - "8081:80"
