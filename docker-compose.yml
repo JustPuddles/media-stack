@@ -424,7 +424,7 @@ services:
     container_name: anythingllm
     restart: unless-stopped
     ports:
-      - "3011:3011"
+      - "3011:3001"
     volumes:
       - /Eltzroth2/apps/anythingllm:/app/server/storage
       - /eltzroth:/eltzroth:ro
