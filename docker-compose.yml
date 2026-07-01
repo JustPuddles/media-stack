@@ -455,18 +455,6 @@ services:
     volumes:
       - /Eltzroth2/apps/comfyui:/home/comfy/ComfyUI
     gpus: all
-
-  automatic1111:
-    image: goolashe/automatic1111-sd-webui:latest
-    container_name: automatic1111
-    restart: unless-stopped
-    ports:
-      - "7860:7860"
-    volumes:
-      - /Eltzroth2/apps/automatic1111:/data
-    environment:
-      - CLI_ARGS=--listen --port 7860 --xformers --enable-insecure-extension-access
-    gpus: all
  
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:latest
@@ -495,17 +483,3 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=all
       - NVIDIA_VISIBLE_DEVICES=all
     gpus: all
-  real-esrgan:
-    image: ghcr.io/ai-dock/real-esrgan:latest
-    container_name: real-esrgan
-    restart: unless-stopped
-    ports:
-      - "7861:7860"
-    volumes:
-      - /Eltzroth2/apps/real-esrgan:/workspace
-      - /Eltzroth2:/Eltzroth2:ro
-    gpus: all
-networks:
-  default:
-    name: ai_gpu_stack
-
