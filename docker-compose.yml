@@ -453,7 +453,7 @@ services:
     ports:
       - "8188:8188"
     volumes:
-      - /Eltzroth2/apps/comfyui:/home/comfy/ComfyUI
+      - /Eltzroth2/apps/comfyui:/comfy/mnt
     gpus: all
  
   tdarr:
