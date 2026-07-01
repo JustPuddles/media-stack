@@ -426,7 +426,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - /eltzroth/apps/anythingllm:/app/server/storage
+      - /Eltzroth2/apps/anythingllm:/app/server/storage
       - /eltzroth:/eltzroth:ro
       - /Eltzroth2:/Eltzroth2:ro
     environment:
@@ -441,7 +441,7 @@ services:
     ports:
       - "8088:8080"
     volumes:
-      - /eltzroth/apps/searxng:/etc/searxng
+      - /Eltzroth2/apps/searxng:/etc/searxng
     environment:
       - BASE_URL=http://YOUR_SERVER_IP:8088/
       - INSTANCE_NAME=Eltzroth Search
@@ -453,7 +453,7 @@ services:
     ports:
       - "8188:8188"
     volumes:
-      - /eltzroth/apps/comfyui:/home/comfy/ComfyUI
+      - /Eltzroth2/apps/comfyui:/home/comfy/ComfyUI
     gpus: all
 
   automatic1111:
@@ -463,7 +463,7 @@ services:
     ports:
       - "7860:7860"
     volumes:
-      - /eltzroth/apps/automatic1111:/data
+      - /Eltzroth2/apps/automatic1111:/data
     environment:
       - CLI_ARGS=--listen --port 7860 --xformers --enable-insecure-extension-access
     gpus: all
