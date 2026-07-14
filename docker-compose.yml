@@ -275,6 +275,17 @@ services:
       - "11434:11434"
     restart: unless-stopped
 
+  jeeves:
+    build:
+      context: /opt/docker/jeeves
+    container_name: jeeves
+    env_file:
+      - /opt/docker/jeeves/.env
+    volumes:
+      - /opt/docker/jeeves/personality.txt:/app/personality.txt:ro
+      - /opt/docker/jeeves/data:/app/data
+    restart: unless-stopped
+
   filebrowser:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
