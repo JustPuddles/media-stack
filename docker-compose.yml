@@ -76,6 +76,24 @@ services:
     ports:
       - "9696:9696"
     restart: unless-stopped
+    
+  readmeabook:
+    image: ghcr.io/kikootwo/readmeabook:latest
+    container_name: readmeabook
+    restart: unless-stopped
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./config:/app/config
+      - ./cache:/app/cache
+      - /mnt/eltzroth/downloads:/downloads
+      - /mnt/eltzroth/media/audiobooks:/audiobooks
+      - ./pgdata:/var/lib/postgresql/data
+      - ./redis:/var/lib/redis
+    environment:
+      PUID: 1000
+      PGID: 1000
+
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
