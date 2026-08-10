@@ -76,6 +76,16 @@ services:
     ports:
       - "9696:9696"
     restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/New_York
+    ports:
+      - "8191:8191"
     
   readmeabook:
     image: ghcr.io/kikootwo/readmeabook:latest
