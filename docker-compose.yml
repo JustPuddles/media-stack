@@ -86,6 +86,20 @@ services:
       - TZ=America/New_York
     ports:
       - "8191:8191"
+      
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /opt/docker/jackett:/config
+      - /mnt/eltzroth/downloads:/downloads
+    ports:
+      - "9117:9117"
+    restart: unless-stopped
     
   readmeabook:
     image: ghcr.io/kikootwo/readmeabook:latest
