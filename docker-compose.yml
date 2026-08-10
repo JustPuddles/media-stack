@@ -87,7 +87,7 @@ services:
       - ./config:/app/config
       - ./cache:/app/cache
       - /mnt/eltzroth/downloads:/downloads
-      - /mnt/eltzroth/media/audiobooks:/audiobooks
+      - /mnt/eltzroth/media:/media
       - ./pgdata:/var/lib/postgresql/data
       - ./redis:/var/lib/redis
     environment:
