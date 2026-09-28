@@ -479,7 +479,7 @@ services:
     ports:
       - 9191:9191
     volumes:
-      - dispatcharr_data:/data
+      - /mnt/Eltzroth2/AppData/dispatcharr:/data
     environment:
       - DISPATCHARR_ENV=aio
       - REDIS_HOST=localhost
